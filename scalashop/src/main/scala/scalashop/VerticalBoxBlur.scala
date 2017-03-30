@@ -57,12 +57,17 @@ object VerticalBoxBlur {
    */
   def parBlur(src: Img, dst: Img, numTasks: Int, radius: Int): Unit = {
     // TODO implement using the `task` construct and the `blur` method
-    ???
 
     //assuming src.width == 100
     val slice = src.width / numTasks
-    val intervals = for (i <- 0 until numTasks) yield i * slice //0..25..50..75
-    val tuples = intervals.zip(intervals.tail) :+ (intervals.last, src.width)// (0,25) (25,50) (50,75) (75,100)
+    val intervals = for (i <- 0 to numTasks) yield i * slice //0..25..50..75..100
+    val tuples = intervals zip intervals.tail// (0,25) (25,50) (50,75) (75,100)
+
+    val tasks = tuples map {
+      case (from, end) => task(blur(src, dst, from, end, radius))
+    }
+
+    tasks foreach(_.join)
 
   }
 
