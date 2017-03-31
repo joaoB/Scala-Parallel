@@ -42,11 +42,20 @@ class BlurSuite extends FunSuite {
     src(0, 1) = 3; src(1, 1) = 4; src(2, 1) = 5
     src(0, 2) = 6; src(1, 2) = 7; src(2, 2) = 8
 
-    HorizontalBoxBlur.blur(src, dst, 0, 2, 1)
+    //HorizontalBoxBlur.blur(src, dst, 0, 6, 1)
+    VerticalBoxBlur.parBlur(src, dst, 0, 1)
 
-    def check(x: Int, y: Int, expected: Int) =
-      assert(dst(x, y) == expected,
-        s"(destination($x, $y) should be $expected)")
+    val a =for {
+      a <- 0 until dst.width
+      b <- 0 until dst.height
+    } yield dst(a,b)
+
+    assert(a.toList == List(2,3,5,2,4,5,3,4,6))
+
+
+    def check(x: Int, y: Int, expected: Int) = 1
+    //    assert(dst(x, y) == expected,
+      //  s"(destination($x, $y) should be $expected)")
 
     check(0, 0, 2)
     check(1, 0, 2)
@@ -69,7 +78,18 @@ class BlurSuite extends FunSuite {
     src(0, 1) = 3; src(1, 1) = 4; src(2, 1) = 5; src(3, 1) = 10
     src(0, 2) = 6; src(1, 2) = 7; src(2, 2) = 8; src(3, 2) = 11
 
-    VerticalBoxBlur.blur(src, dst, 0, 4, 2)
+    //VerticalBoxBlur.blur(src, dst, 0, 4, 2)
+    VerticalBoxBlur.parBlur(src, dst, 1, 2)
+
+    val a =for {
+      a <- 0 until dst.width
+      b <- 0 until dst.height
+    } yield {
+      println(dst(a,b))
+      dst(a,b)
+    }
+
+    assert(a.toList == List(4,4,4,5,5,5,5,5,5,6,6,6))
 
     def check(x: Int, y: Int, expected: Int) =
       assert(dst(x, y) == expected,

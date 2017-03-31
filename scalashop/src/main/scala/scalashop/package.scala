@@ -52,6 +52,8 @@ package object scalashop {
         (r + red(rgba), g + green(rgba), b + blue(rgba), a + alpha(rgba))
     }
 
+    println("bluring: " + x + "  " + y)
+
     rgba(
       pixelColoredSummed._1 / grid.length,
       pixelColoredSummed._2 / grid.length,
